@@ -1,4 +1,4 @@
-//for efficiency test
+//BST Class for efficiency test
 
 public class BST {
 
