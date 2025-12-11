@@ -1,3 +1,5 @@
+//for efficiency test
+
 public class BST {
 
     //standard binary search tree class with insert delete and find methods to test for time efficiency
