@@ -1,29 +1,47 @@
-import java.io.File;
-import java.io.FileNotFoundException; //
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class Main {
-
     public static void main(String[] args) {
-        BST tree=new BST();
-        loadWordsIntoTree(tree, "file");
-    }
-
-    public static void loadWordsIntoTree(BST tree, String file){ //idk why needed to put static but computer told me to otherwise error
-        File fileName = new File(file);
-        try (Scanner myReader = new Scanner(fileName)) {
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                data=data.trim();
-                if(!data.isEmpty()){
-                    tree.put(data);
-                }
+        int sizes[] = {10,100,1000,5000,10000};
+        System.out.println("n,insert,search,delete,avgInsert,avgSearch,avgDelete");
+        Random rand = new Random();
+        for(int n:sizes){
+            ArrayList<Integer> vals = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                vals.add(i);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            Collections.shuffle(vals, rand);
+
+            BST tree = new BST();
+            long startInsert = System.nanoTime();
+            for (int val:vals){
+                tree.insert(val);
+            }
+            long endInsert = System.nanoTime();
+            long totalInsert = endInsert - startInsert;
+            double avgInsert = totalInsert / (double) n;
+
+            long startSearch = System.nanoTime();
+            for (int val : vals) {
+                tree.contains(val);
+            }
+            long endSearch = System.nanoTime();
+            long totalSearch = endSearch - startSearch;
+            double avgSearch = totalSearch / (double) n;
+
+            long startDelete = System.nanoTime();
+            for (int val : vals) {
+                tree.delete(val);
+            }
+            long endDelete = System.nanoTime();
+            long totalDelete = endDelete - startDelete;
+            double avgDelete = totalDelete / (double) n;
         }
+
+
     }
 
-    //https://www.w3schools.com/java/java_files_read.asp
+
 }

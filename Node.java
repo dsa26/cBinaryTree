@@ -1,18 +1,11 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 public class Node {
+    public int val;
     public Node left;
     public Node right;
-    public String key;
-    public ArrayList<String> values;
 
-    public Node(String key, String val) {
-        this.key = key;
-        values = new ArrayList<>();
-        values.add(val);
+    public Node (int value){
+        this.val = value;
         this.left = null;
         this.right = null;
     }
-
 }

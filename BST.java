@@ -1,117 +1,74 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class BST {
-    public Node root;
 
+    //standard binary search tree class with insert delete and find methods to test for time efficiency
+
+    Node root;
     public BST() {
-        this.root = null;
+        root = null;
     }
 
-    public boolean contains(String key) {
-        return contains(key, root);
+    public boolean contains(int key){
+        return contains(root,key);
     }
 
-    public boolean contains(String key, Node node) {
-        if (node == null)
+    private boolean contains(Node current, int key){
+        if(current == null){
             return false;
-        if (node.key.equals(key))
+        }
+        if(current.val == key){
             return true;
-        return contains(key, node.left) || contains(key, node.right);
+        }
+        if(current.val > key){
+            return contains(current.left,key);
+        } else {
+            return contains(current.right,key);
+        }
     }
 
-    public Node findMin() {
-        return findMin(root);
+    public void delete(int key) {
+        root = delete(root,key);
     }
 
-    public Node findMin(Node node) {
-        if (node == null)
-            return null;
-        Node temp = node;
-        while (temp.left != null)
-            temp = temp.left;
-        return temp;
-    }
-
-    private String sortedWord(String word){
-        word=word.toLowerCase();
-        char[] arr = word.toCharArray();
-        //do selection sort
-        for(int i=0;i<arr.length-1;i++){
-            int min = i;
-            for(int j=i+1;j<arr.length;j++){
-                if(arr[j]<arr[min]){
-                    min = j;
-                }
+    private Node delete(Node current, int key) {
+        if(current == null){
+            return current;
+        }
+        if(current.val > key){
+            current.left=delete(current.left,key);
+        } else if (current.val < key){
+            current.right=delete(current.right,key);
+        } else{
+            if(current.left==null){
+                return current.right;
             }
-
-            char temp = arr[i];
-            arr[i] = arr[min];
-            arr[min] = temp;
+            if(current.right==null){
+                return current.left;
+            }
+            Node replace=current.right;
+            while(replace!=null && replace.left!=null){
+                replace=replace.left;
+            }
+            current.val=replace.val;
+            current.right=delete(current.right,replace.val);
         }
-
-        return new String(arr);
+        return current;
     }
 
-    public void put(String str) {
-        root = put(sortedWord(str), str, root);
+    public void insert(int key) {
+        root=insert(root,key);
     }
 
-    public Node put(String key, String val, Node node) {
-        if (node == null) {
-            return new Node(key, val);
+    public Node insert(Node root, int key) {
+        if (root == null) {
+            return new Node(key);
         }
-        if (key.compareTo(node.key)<0) { //put on left
-            node.left=put(key,val,node.left);
-        } else if (key.compareTo(node.key)>0){ //put on right
-            node.right=put(key,val,node.right);
-        } else {
-            node.values.add(val);
+        if (key < root.val) {
+            root.left = insert(root.left, key);
+        } else if (key > root.val) {
+            root.right = insert(root.right, key);
         }
-        return node;
+        return root;
     }
-
-    public void printAnagrams(String key){
-        key=sortedWord(key);
-        ArrayList<String> words = getAnagrams(root, key);
-        for(int i=0;i<words.size();i++){
-            System.out.println(words.get(i));
-        }
-    }
-
-    private ArrayList<String> getAnagrams(Node current, String key){
-        if(current==null){
-            return null;
-        }
-
-        if(current.key.equals(key)){
-            return current.values;
-        } if (key.compareTo(current.key)<0) { //put on left
-            return getAnagrams(current.left, key);
-        } else if (key.compareTo(current.key)>0){ //put on right
-            return getAnagrams(current.right, key);
-        } else {
-            return null;
-        }
-    }
-
-
-
-//
-//    public void inOrder(){
-//        inOrderRec(root);
-//    }
-//
-//    private void inOrderRec(Node current){
-//        if(current==null){
-//            return;
-//        }
-//        inOrderRec(current.left);
-//        System.out.print(current.values+" ");
-//        inOrderRec(current.right);
-//    }
-//
-
 
 
 
